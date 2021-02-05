@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Club Membership</title>
+  <meta charset="UTF-8">
+  <style>
+      
+      .selected {
+        text-decoration: line-through ;
+        font-style: italic;
+        color: gray;
+      }
+
+      input {
+          width: 100%;
+          padding: 5px;
+          margin: 5px 5px 5px 0px;
+          box-sizing: border-box;
+
+      }
+
+  </style>
+
+</head>
+<body>
+
+    <h1>Student Club Roster</h1>
+
+    <h2>Add Students</h2>
+
+    <label for="student-name">Student Name</label><input id="student-name" name="student-name">
+    <br>
+    <label for="student-id">Student ID</label><input id="student-id" name="student-id">
+    <br>
+    <label for="student-gpa">Student GPA</label><input id="student-gpa" name="student-gpa" type="number">
+    <br>
+    <button id="add-student">Add Student</button>    
+
+    <h2>Student List</h2>
+
+    <p>There are 
+        <span id="student-count">
+          <!-- use JavaScript to count the number of students, and show here -->
+        </span> 
+    student(s) in the club.</p>
+    
+
+    <ul id="student-list">
+        <!-- use JavaScript to create li elements  -->
+    </ul>
+
+    <button id="remove-selected-students">Remove selected students</button>
+
+<script>
+
+    function displayStudentCount() {
+    let allStudents = "";
+    //select all li with class I add on creation of li: .list-item
+    //to distinguish it from other potential li elements...
+    allStudents = document.querySelectorAll(".list-item");
+
+    //get number of li and display in #student-count span
+    let allStudentsNumber = allStudents.length;
+    let studentCount = document.querySelector("#student-count");
+
+    studentCount.innerHTML = allStudentsNumber;
+    }
+
+    displayStudentCount();
+
+    //variables
+    let studentName = document.querySelector("#student-name");
+    let studentID = document.querySelector("#student-id");
+    let studentGPA = document.querySelector("#student-gpa");
+
+    let studentList = document.querySelector("#student-list");
+
+    let btnAddStudent = document.querySelector("#add-student");
+    let btnClearStudents = document.querySelector("#remove-selected-students");
+
+    //add items to list
+    btnAddStudent.addEventListener("click", function() {
+
+        //VALIDATION
+
+        //make sure fields required
+        if (studentName.value == "") {
+            alert("Please enter a Student Name.");
+            return;
+        }
+
+        if (studentID.value == "") {
+            alert("Please enter a Student ID.");
+            return;
+        }
+
+        if (studentGPA.value == "") {
+            alert("Please enter a number for GPA.");
+            return;
+        }
+        
+        //check GPA range
+        if (studentGPA.value < 0 || studentGPA.value > 4) {
+            alert("GPA must be between 0 and 4.");
+            return;
+        }
+
+        //string from user input
+        let stringListItem = `${studentName.value}, ID: ${studentID.value} GPA: ${studentGPA.value}`;
+
+        //new li
+        let elementListItem = document.createElement("li");
+        elementListItem.classList.add("list-item"); //so I can select it for student count
+        elementListItem.innerHTML = stringListItem;
+
+        //event listener for li style
+        elementListItem.addEventListener("click", function() {
+            let itemClass = this.getAttribute("class");
+            //toggle selected class
+            elementListItem.classList.toggle("selected");
+        })
+
+        //add li to ul
+        studentList.appendChild(elementListItem);
+
+        //clear all inputs
+        studentName.value ="";
+        studentID.value="";
+        studentGPA.value="";
+
+        //update student count
+        displayStudentCount();
+    })
+
+    btnClearStudents.addEventListener("click", function() {
+        //select all li with class: .selected
+        selectedStudents = document.querySelectorAll(".selected");
+
+        //remove all selected li
+        selectedStudents.forEach(function(student) {
+            student.remove();
+        })
+
+        //refresh student count
+        displayStudentCount();
+    })
+
+
+
+</script>
+
+</body>
+</html>

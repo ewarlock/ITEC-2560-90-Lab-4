@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User List</title>
+</head>
+<body>
+
+    <p>Enter text to add to the list:</p>
+    <input id="new-text"></input>
+    <button id="add-text">Add</button>
+    <button id="clear-text">Clear List</button>
+
+   <!--Empty unordered list-->
+    <ul id="list-of-text"></ul>
+
+</body>
+
+<script>
+
+    let textInput = document.querySelector("#new-text");
+    let addButton = document.querySelector("#add-text");
+    let clearButton = document.querySelector("#clear-text");
+    let textList = document.querySelector("#list-of-text");
+
+    //enter key clicks add button
+    document.addEventListener("keyup", function() {
+        if (event.keyCode == 13)
+            addButton.click();
+    })
+
+    //add button functionality
+    addButton.addEventListener("click", function() {
+        //prevent more than 10 items added to list
+        if (textList.children.length >= 10) {
+            alert("You can only add 10 items to the list!");
+            return;
+        }
+
+        //read the text in the input
+        let newText = textInput.value;
+
+        //prevent blank entries
+        if (newText.length == 0) {
+            alert("Please enter text.");
+            return;
+        }
+
+        //maximum 50 characters
+        if (newText.length > 50) {
+            alert("You may only enter up to 50 characters.");
+            return;
+        }
+
+        //create new li element
+        let newListItem = document.createElement("li");
+        //li element text is from input
+        newListItem.innerHTML = newText;
+        //add new li as child of ul
+        textList.appendChild(newListItem);
+        //clear text in input
+        textInput.value = "";
+    })
+
+    //clear button functionality
+    clearButton.addEventListener("click", function() {
+        textList.innerHTML = "";
+    })
+</script>
+</html>
